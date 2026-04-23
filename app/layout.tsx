@@ -12,3 +12,8 @@ export default function RootLayout({
     </html>
   );
 }
+export const metadata = {
+  title: "Vast Flow",
+  description: "Traffic monitoring system",
+  manifest: "/manifest.json",
+};
