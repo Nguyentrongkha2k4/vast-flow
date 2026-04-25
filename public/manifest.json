@@ -3,9 +3,9 @@
   "short_name": "VFlow",
   "icons": [
     {
-      "src": "/image/app_icon.png",
+      "src": "/image/app_icon.ico",
       "sizes": "192x192",
-      "type": "image/png"
+      "type": "image/x-icon"
     },
     {
       "src": "/image/app_icon.png",
