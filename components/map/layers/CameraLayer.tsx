@@ -7,8 +7,10 @@ import { useMapContext } from "@/context/MapContext";
 
 export default function CameraLayer() {
   const { cameras } = useCameras();
-  const { setSelectedCamera } = useMapContext();
+  const { setSelectedCamera, showCameras } = useMapContext();
 
+  if (!showCameras) return null;
+  
   return (
     <>
       {cameras.map((cam) => (

@@ -2,7 +2,13 @@
 
 import { useState } from "react";
 import { useMapContext } from "@/context/MapContext";
-import { Map, TrafficCone, Flame, Clock } from "lucide-react";
+import {
+  Map,
+  TrafficCone,
+  Flame,
+  Clock,
+  Camera,
+} from "lucide-react";
 
 export default function MapSidebar() {
   const [open, setOpen] = useState(false);
@@ -14,6 +20,8 @@ export default function MapSidebar() {
     setHeatmapEnabled,
     forecastTime,
     setForecastTime,
+    showCameras,
+    setShowCameras,
   } = useMapContext();
 
   const Item = ({
@@ -27,34 +35,25 @@ export default function MapSidebar() {
     label: string;
     onClick: () => void;
   }) => (
-    <div
+    <button
       onClick={onClick}
-      className={`
-        flex items-center gap-3 px-3 py-2 rounded-xl cursor-pointer
-        transition-all duration-200
+      className={`flex items-center gap-3 w-full px-3 py-2 rounded-xl transition-all duration-200
         ${
           active
-            ? "bg-white/10 text-white"
+            ? "bg-white/15 text-white"
             : "text-gray-400 hover:text-white hover:bg-white/5"
-        }
-      `}
+        }`}
     >
       <div className="w-5 h-5">{icon}</div>
 
       <span
-        className={`
-          whitespace-nowrap text-sm font-medium
-          transition-all duration-200
-          ${
-            open
-              ? "opacity-100 translate-x-0"
-              : "opacity-0 -translate-x-2"
-          }
+        className={`text-sm font-medium transition-all duration-200
+          ${open ? "opacity-100" : "opacity-0 w-0 overflow-hidden"}
         `}
       >
         {label}
       </span>
-    </div>
+    </button>
   );
 
   return (
@@ -63,47 +62,61 @@ export default function MapSidebar() {
       onMouseLeave={() => setOpen(false)}
       className={`
         absolute bottom-6 left-6 z-[9999]
-        bg-neutral-900/90 backdrop-blur-md
+        bg-neutral-900/90 backdrop-blur-xl
         border border-white/10
-        rounded-2xl shadow-xl
-        
-        flex flex-col justify-between
+        rounded-2xl shadow-2xl
+
+        flex flex-col
+        h-80
+
+        opacity-90 hover:opacity-100
         p-2
-        
         transition-all duration-300
-        ${open ? "w-52 h-[260px]" : "w-14 h-[150px]"}
+        ${open ? "w-56" : "w-14"}
       `}
     >
-      {/* NORMAL MAP */}
-      <Item
-        active={mode === "normal"}
-        icon={<Map size={18} />}
-        label="Normal Map"
-        onClick={() => setMode("normal")}
-      />
+      {/* ================= MAP MODE ================= */}
+      <div className="space-y-1">
+        <Item
+          active={mode === "normal"}
+          icon={<Map size={18} />}
+          label="Normal"
+          onClick={() => setMode("normal")}
+        />
 
-      {/* TRAFFIC MAP */}
-      <Item
-        active={mode === "traffic"}
-        icon={<TrafficCone size={18} />}
-        label="Traffic Map"
-        onClick={() => setMode("traffic")}
-      />
+        <Item
+          active={mode === "traffic"}
+          icon={<TrafficCone size={18} />}
+          label="Traffic"
+          onClick={() => setMode("traffic")}
+        />
+      </div>
 
-      {/* HEATMAP */}
-      <Item
-        active={heatmapEnabled}
-        icon={<Flame size={18} />}
-        label="Heatmap"
-        onClick={() => setHeatmapEnabled(!heatmapEnabled)}
-      />
+      <div className="my-2 h-px bg-white/10" />
 
-      {/* SLIDER (ONLY WHEN HEATMAP ON) */}
-      {heatmapEnabled && (
-        <div className="mt-2 px-2">
+      {/* ================= LAYERS ================= */}
+      <div className="space-y-1">
+        <Item
+          active={showCameras}
+          icon={<Camera size={18} />}
+          label="Cameras"
+          onClick={() => setShowCameras(!showCameras)}
+        />
+
+        <Item
+          active={heatmapEnabled}
+          icon={<Flame size={18} />}
+          label="Heatmap"
+          onClick={() => setHeatmapEnabled(!heatmapEnabled)}
+        />
+      </div>
+
+      {/* ================= FORECAST ================= */}
+      {heatmapEnabled && open && (
+        <div className="mt-3 px-2">
           <div className="flex items-center gap-2 text-xs text-gray-400 mb-2">
             <Clock size={14} />
-            Forecast: {forecastTime} min
+            <span>Forecast: {forecastTime} min</span>
           </div>
 
           <input
@@ -115,35 +128,17 @@ export default function MapSidebar() {
             onChange={(e) =>
               setForecastTime(Number(e.target.value))
             }
-            className="w-full accent-red-500"
+            className="w-full accent-red-500 cursor-pointer"
           />
+
+          {/* tick labels */}
+          <div className="flex justify-between text-[10px] text-gray-500 mt-1">
+            <span>0</span>
+            <span>30</span>
+            <span>60</span>
+          </div>
         </div>
       )}
-
-      {/* DIVIDER */}
-      <div
-        className={`
-          h-px bg-white/10 my-2
-          transition-opacity duration-200
-          ${open ? "opacity-100" : "opacity-0"}
-        `}
-      />
-
-      {/* STATUS */}
-      <div
-        className={`
-          text-xs text-gray-400 px-2
-          transition-all duration-200
-          ${open ? "opacity-100" : "opacity-0"}
-        `}
-      >
-        Mode: <span className="text-white">{mode}</span>
-        <br />
-        Heatmap:{" "}
-        <span className="text-white">
-          {heatmapEnabled ? "ON" : "OFF"}
-        </span>
-      </div>
     </div>
   );
 }
