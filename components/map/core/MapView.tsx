@@ -3,9 +3,10 @@
 import { MapContainer, TileLayer } from "react-leaflet";
 import { useMapContext } from "@/context/MapContext";
 import CameraLayer from "../layers/CameraLayer";
+import HeatmapLayer from "../layers/HeatmapLayer";
 
 export default function MapView() {
-  const { mode } = useMapContext(); // 🔥 dùng context
+  const { mode, heatmapEnabled, forecastTime } = useMapContext();
 
   return (
     <div className="h-screen w-full">
@@ -21,17 +22,20 @@ export default function MapView() {
         maxBoundsViscosity={1.0}
         className="h-full w-full"
       >
+        {/* ================= BASE MAP ================= */}
         {mode === "normal" ? (
-          <TileLayer
-            url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-          />
+          <TileLayer url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" />
         ) : (
-          <TileLayer
-            url="https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png"
-          />
+          <TileLayer url="https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png" />
         )}
 
+        {/* ================= CAMERA LAYER ================= */}
         <CameraLayer />
+
+        {/* ================= HEATMAP LAYER ================= */}
+        {heatmapEnabled && (
+          <HeatmapLayer forecastTime={forecastTime} />
+        )}
       </MapContainer>
     </div>
   );
