@@ -10,15 +10,29 @@ type MapContextType = {
 
   selectedCamera: any;
   setSelectedCamera: (c: any) => void;
+
+  heatmapEnabled: boolean;
+  setHeatmapEnabled: (v: boolean) => void;
+
+  forecastTime: number;
+  setForecastTime: (v: number) => void;
+
+  // 🔥 NEW
+  showCameras: boolean;
+  setShowCameras: (v: boolean) => void;
 };
 
 const MapContext = createContext<MapContextType | null>(null);
 
 export function MapProvider({ children }: any) {
   const [mode, setMode] = useState<MapMode>("normal");
-
-  // ✅ phải nằm trong Provider
   const [selectedCamera, setSelectedCamera] = useState<any>(null);
+
+  const [heatmapEnabled, setHeatmapEnabled] = useState(false);
+  const [forecastTime, setForecastTime] = useState(0);
+
+  // 🔥 NEW STATE
+  const [showCameras, setShowCameras] = useState(true);
 
   return (
     <MapContext.Provider
@@ -27,6 +41,14 @@ export function MapProvider({ children }: any) {
         setMode,
         selectedCamera,
         setSelectedCamera,
+        heatmapEnabled,
+        setHeatmapEnabled,
+        forecastTime,
+        setForecastTime,
+
+        // 🔥 EXPORT
+        showCameras,
+        setShowCameras,
       }}
     >
       {children}
