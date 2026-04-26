@@ -3,6 +3,10 @@
 import { useEffect, useState } from "react";
 import { getFullTrafficByCameraId } from "@/services/api/traffic.service";
 import type { Camera } from "@/types/camera";
+import {
+  getCongestionColor,
+  getCongestionStatus,
+} from "../util/traffic";
 
 type Props = {
   data: Camera;
@@ -27,10 +31,7 @@ export default function CameraInsightPanel({ data, onClose }: Props) {
   });
 
   const [mode, setMode] = useState<"current" | "forecast">("current");
-
-  // 👉 TIME SLOT (source of truth)
   const [selectedTime, setSelectedTime] = useState(5);
-
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
@@ -57,23 +58,10 @@ export default function CameraInsightPanel({ data, onClose }: Props) {
     };
   }, [data.id]);
 
-  const getColor = (value?: number) => {
-    const c = value ?? traffic.congestion;
-
-    if (c > 70) return "#ff4d4f";
-    if (c > 40) return "#faad14";
-    return "#52c41a";
-  };
-
-  const getStatusText = () => {
-    if (traffic.congestion > 70) return "HEAVY";
-    if (traffic.congestion > 40) return "MODERATE";
-    return "SMOOTH";
-  };
-
-  // 🔥 map time → index
-  const forecastIndex = selectedTime / 5 - 1;
-  const forecastPoint = traffic.forecast?.[forecastIndex];
+  // 🔥 forecast lookup by timeOffset (CLEAN)
+  const forecastPoint = traffic.forecast.find(
+    (f) => f.timeOffset === selectedTime
+  );
 
   return (
     <div
@@ -167,8 +155,13 @@ export default function CameraInsightPanel({ data, onClose }: Props) {
         <>
           <div style={{ marginTop: 12 }}>
             🚦 Traffic:
-            <span style={{ color: getColor(), marginLeft: 6 }}>
-              {getStatusText()}
+            <span
+              style={{
+                color: getCongestionColor(traffic.congestion),
+                marginLeft: 6,
+              }}
+            >
+              {getCongestionStatus(traffic.congestion)}
             </span>
           </div>
 
@@ -178,15 +171,19 @@ export default function CameraInsightPanel({ data, onClose }: Props) {
 
           {/* CHART */}
           <div style={{ marginTop: 12 }}>
-            <div style={{ fontSize: 12, opacity: 0.7 }}>Last 5 min</div>
+            <div style={{ fontSize: 12, opacity: 0.7 }}>
+              Last 5 min
+            </div>
 
-            <div style={{
-              display: "flex",
-              gap: 4,
-              alignItems: "flex-end",
-              height: 50,
-              marginTop: 6,
-            }}>
+            <div
+              style={{
+                display: "flex",
+                gap: 4,
+                alignItems: "flex-end",
+                height: 50,
+                marginTop: 6,
+              }}
+            >
               {traffic.trend.map((v, i) => (
                 <div
                   key={i}
@@ -204,16 +201,18 @@ export default function CameraInsightPanel({ data, onClose }: Props) {
           {/* PROGRESS */}
           <div style={{ marginTop: 12 }}>
             <div style={{ fontSize: 12 }}>Congestion</div>
-            <div style={{
-              height: 6,
-              background: "#333",
-              borderRadius: 4,
-            }}>
+            <div
+              style={{
+                height: 6,
+                background: "#333",
+                borderRadius: 4,
+              }}
+            >
               <div
                 style={{
                   width: `${traffic.congestion}%`,
                   height: "100%",
-                  background: getColor(),
+                  background: getCongestionColor(traffic.congestion),
                   borderRadius: 4,
                 }}
               />
@@ -248,13 +247,15 @@ export default function CameraInsightPanel({ data, onClose }: Props) {
           </div>
 
           {/* BAR */}
-          <div style={{
-            display: "flex",
-            gap: 4,
-            alignItems: "flex-end",
-            height: 70,
-            marginTop: 10,
-          }}>
+          <div
+            style={{
+              display: "flex",
+              gap: 4,
+              alignItems: "flex-end",
+              height: 70,
+              marginTop: 10,
+            }}
+          >
             {traffic.forecast.map((f, i) => (
               <div
                 key={i}

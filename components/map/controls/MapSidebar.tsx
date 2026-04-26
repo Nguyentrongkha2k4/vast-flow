@@ -2,11 +2,19 @@
 
 import { useState } from "react";
 import { useMapContext } from "@/context/MapContext";
-import { Map, TrafficCone } from "lucide-react";
+import { Map, TrafficCone, Flame, Clock } from "lucide-react";
 
 export default function MapSidebar() {
   const [open, setOpen] = useState(false);
-  const { mode, setMode } = useMapContext();
+
+  const {
+    mode,
+    setMode,
+    heatmapEnabled,
+    setHeatmapEnabled,
+    forecastTime,
+    setForecastTime,
+  } = useMapContext();
 
   const Item = ({
     active,
@@ -24,9 +32,11 @@ export default function MapSidebar() {
       className={`
         flex items-center gap-3 px-3 py-2 rounded-xl cursor-pointer
         transition-all duration-200
-        ${active 
-          ? "bg-white/10 text-white" 
-          : "text-gray-400 hover:text-white hover:bg-white/5"}
+        ${
+          active
+            ? "bg-white/10 text-white"
+            : "text-gray-400 hover:text-white hover:bg-white/5"
+        }
       `}
     >
       <div className="w-5 h-5">{icon}</div>
@@ -35,7 +45,11 @@ export default function MapSidebar() {
         className={`
           whitespace-nowrap text-sm font-medium
           transition-all duration-200
-          ${open ? "opacity-100 translate-x-0" : "opacity-0 -translate-x-2"}
+          ${
+            open
+              ? "opacity-100 translate-x-0"
+              : "opacity-0 -translate-x-2"
+          }
         `}
       >
         {label}
@@ -55,13 +69,12 @@ export default function MapSidebar() {
         
         flex flex-col justify-between
         p-2
-        h-[140px]  
         
         transition-all duration-300
-        ${open ? "w-48" : "w-14"}
+        ${open ? "w-52 h-[260px]" : "w-14 h-[150px]"}
       `}
     >
-      {/* NORMAL */}
+      {/* NORMAL MAP */}
       <Item
         active={mode === "normal"}
         icon={<Map size={18} />}
@@ -69,7 +82,7 @@ export default function MapSidebar() {
         onClick={() => setMode("normal")}
       />
 
-      {/* TRAFFIC */}
+      {/* TRAFFIC MAP */}
       <Item
         active={mode === "traffic"}
         icon={<TrafficCone size={18} />}
@@ -77,10 +90,40 @@ export default function MapSidebar() {
         onClick={() => setMode("traffic")}
       />
 
-      {/* Divider */}
+      {/* HEATMAP */}
+      <Item
+        active={heatmapEnabled}
+        icon={<Flame size={18} />}
+        label="Heatmap"
+        onClick={() => setHeatmapEnabled(!heatmapEnabled)}
+      />
+
+      {/* SLIDER (ONLY WHEN HEATMAP ON) */}
+      {heatmapEnabled && (
+        <div className="mt-2 px-2">
+          <div className="flex items-center gap-2 text-xs text-gray-400 mb-2">
+            <Clock size={14} />
+            Forecast: {forecastTime} min
+          </div>
+
+          <input
+            type="range"
+            min={0}
+            max={60}
+            step={5}
+            value={forecastTime}
+            onChange={(e) =>
+              setForecastTime(Number(e.target.value))
+            }
+            className="w-full accent-red-500"
+          />
+        </div>
+      )}
+
+      {/* DIVIDER */}
       <div
         className={`
-          h-px bg-white/10 my-1
+          h-px bg-white/10 my-2
           transition-opacity duration-200
           ${open ? "opacity-100" : "opacity-0"}
         `}
@@ -95,6 +138,11 @@ export default function MapSidebar() {
         `}
       >
         Mode: <span className="text-white">{mode}</span>
+        <br />
+        Heatmap:{" "}
+        <span className="text-white">
+          {heatmapEnabled ? "ON" : "OFF"}
+        </span>
       </div>
     </div>
   );
