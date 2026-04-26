@@ -4,4 +4,17 @@ export interface TrafficData {
   congestion: number;
   trend: number[];
   weather: "sunny" | "rain" | "cloudy";
-};
+
+  forecast: TrafficForecastPoint[];
+}
+export interface TrafficForecastPoint {
+  timeOffset: number; // 5 → 60 phút
+  avgSpeed: number;
+  vehicleCount: number;
+  congestion: number;
+}
+
+export interface TrafficForecast {
+  cameraId: string;
+  points: TrafficForecastPoint[];
+}
