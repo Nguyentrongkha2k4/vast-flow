@@ -70,6 +70,7 @@ export default function CameraInsightPanel({ data, onClose }: Props) {
         top: 20,
         right: 20,
         width: 320,
+        height: "90vh",
         background: "#111",
         color: "white",
         borderRadius: 16,
@@ -145,9 +146,10 @@ export default function CameraInsightPanel({ data, onClose }: Props) {
 
       {/* INFO */}
       <div style={{ marginTop: 10 }}>
-        <div><b>ID:</b> {data.id}</div>
+        {/* <div><b>ID:</b> {data.id}</div>  */}
+        <div><b>Location:</b> {data.district ? data.district : "Trung tâm thành phố"}</div>
         <div>Status: {data.status}</div>
-        <div>PTZ: {data.ptz ? "YES" : "NO"}</div>
+        {/* <div>PTZ: {data.ptz ? "YES" : "NO"}</div> */}
       </div>
 
       {/* ================= CURRENT ================= */}
@@ -224,6 +226,28 @@ export default function CameraInsightPanel({ data, onClose }: Props) {
       {/* ================= FORECAST ================= */}
       {mode === "forecast" && (
         <div style={{ marginTop: 12 }}>
+          {forecastPoint ? (
+          <div>
+          <div style={{ marginTop: 12 }}>
+            🚦 Traffic:
+            <span
+              style={{
+                color: getCongestionColor(forecastPoint.congestion),
+                marginLeft: 6,
+              }}
+            >
+              {getCongestionStatus(forecastPoint.congestion)}
+            </span>
+          </div>
+
+          <div>⚡ Speed: {forecastPoint.avgSpeed} km/h</div>
+          <div>🚗 Vehicles: {forecastPoint.vehicleCount}</div>
+            </div>) : (
+                          <div style={{ opacity: 0.6 }}>
+                            No forecast data
+                          </div>
+                        )}
+
           <div style={{ fontSize: 12, opacity: 0.7 }}>
             Forecast timeline (0 → 60 min)
           </div>
@@ -238,7 +262,7 @@ export default function CameraInsightPanel({ data, onClose }: Props) {
             onChange={(e) => setSelectedTime(Number(e.target.value))}
             style={{
               width: "100%",
-              marginTop: 10,
+              marginTop: 20,
             }}
           />
 
@@ -253,7 +277,7 @@ export default function CameraInsightPanel({ data, onClose }: Props) {
               gap: 4,
               alignItems: "flex-end",
               height: 70,
-              marginTop: 10,
+              marginTop: 20,
             }}
           >
             {traffic.forecast.map((f, i) => (
@@ -262,7 +286,7 @@ export default function CameraInsightPanel({ data, onClose }: Props) {
                 onClick={() => setSelectedTime(f.timeOffset)}
                 style={{
                   width: 10,
-                  height: f.congestion,
+                  height: f.congestion/100 * 70,
                   background:
                     f.timeOffset === selectedTime
                       ? "#ff4d4f"
@@ -275,7 +299,7 @@ export default function CameraInsightPanel({ data, onClose }: Props) {
           </div>
 
           {/* DETAIL */}
-          <div style={{ marginTop: 10, fontSize: 12 }}>
+          {/* <div style={{ marginTop: 10, fontSize: 12 }}>
             {forecastPoint ? (
               <>
                 ⏱ +{forecastPoint.timeOffset} min<br />
@@ -288,12 +312,12 @@ export default function CameraInsightPanel({ data, onClose }: Props) {
                 No forecast data
               </div>
             )}
-          </div>
+          </div> */}
         </div>
       )}
 
       {/* VIDEO */}
-      {data.videoUrl && (
+      {/* {data.videoUrl && (
         <a
           href={data.videoUrl}
           target="_blank"
@@ -306,7 +330,7 @@ export default function CameraInsightPanel({ data, onClose }: Props) {
         >
           ▶ Live stream
         </a>
-      )}
+      )} */}
     </div>
   );
 }

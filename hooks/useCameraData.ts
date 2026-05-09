@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { Camera } from "@/types/camera";
-import { fetchCameras } from "@/services/api/camera.service";
+import { fetchCameras, getCameras } from "@/services/api/camera.service";
 import { getFullTrafficByCameraId, getTrafficByCameraId } from "@/services/api/traffic.service";
 
 export function useCameras() {
@@ -19,7 +19,8 @@ export function useCameras() {
       const enriched = await Promise.all(
         baseCameras.map(async (cam) => {
           const traffic = await getFullTrafficByCameraId(cam.id);
-
+          // const test = await getCameras();
+          // console.log("test", test);
           return {
             ...cam,
             traffic,
