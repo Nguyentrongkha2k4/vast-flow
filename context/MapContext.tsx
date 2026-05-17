@@ -17,38 +17,54 @@ type MapContextType = {
   forecastTime: number;
   setForecastTime: (v: number) => void;
 
-  // 🔥 NEW
+  // CAMERA LAYER
   showCameras: boolean;
   setShowCameras: (v: boolean) => void;
+
+  // EVENT LAYER
+  showEvents: boolean;
+  setShowEvents: (v: boolean) => void;
 };
 
 const MapContext = createContext<MapContextType | null>(null);
 
 export function MapProvider({ children }: any) {
   const [mode, setMode] = useState<MapMode>("normal");
+
   const [selectedCamera, setSelectedCamera] = useState<any>(null);
 
   const [heatmapEnabled, setHeatmapEnabled] = useState(false);
+
   const [forecastTime, setForecastTime] = useState(0);
 
-  // 🔥 NEW STATE
+  // CAMERA
   const [showCameras, setShowCameras] = useState(true);
+
+  // EVENT
+  const [showEvents, setShowEvents] = useState(true);
 
   return (
     <MapContext.Provider
       value={{
         mode,
         setMode,
+
         selectedCamera,
         setSelectedCamera,
+
         heatmapEnabled,
         setHeatmapEnabled,
+
         forecastTime,
         setForecastTime,
 
-        // 🔥 EXPORT
+        // CAMERA
         showCameras,
         setShowCameras,
+
+        // EVENT
+        showEvents,
+        setShowEvents,
       }}
     >
       {children}
@@ -58,6 +74,12 @@ export function MapProvider({ children }: any) {
 
 export function useMapContext() {
   const ctx = useContext(MapContext);
-  if (!ctx) throw new Error("useMapContext must be used inside MapProvider");
+
+  if (!ctx) {
+    throw new Error(
+      "useMapContext must be used inside MapProvider"
+    );
+  }
+
   return ctx;
 }
