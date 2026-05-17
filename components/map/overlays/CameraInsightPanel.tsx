@@ -143,7 +143,9 @@ export default function CameraInsightPanel({ data, onClose }: Props) {
         }}
       /> */}
       <img
-        src={imgSrc}
+        src={`https://images.weserv.nl/?url=${encodeURIComponent(
+    data.snapshotUrl.replace("http://", "")
+  )}&t=${refresh}`}
         alt="camera"
         style={{ width: "100%", borderRadius: 10, marginTop: 10 }}
       />
