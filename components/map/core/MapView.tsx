@@ -4,6 +4,7 @@ import { MapContainer, TileLayer } from "react-leaflet";
 import { useMapContext } from "@/context/MapContext";
 import CameraLayer from "../layers/CameraLayer";
 import HeatmapLayer from "../layers/HeatmapLayer";
+import EventLayer from "../layers/EventLayer";
 
 export default function MapView() {
   const { mode, heatmapEnabled, forecastTime } = useMapContext();
@@ -31,6 +32,9 @@ export default function MapView() {
 
         {/* ================= CAMERA LAYER ================= */}
         <CameraLayer />
+
+        {/* ================= EVENT LAYER ================= */}
+        {/* <EventLayer /> */}
 
         {/* ================= HEATMAP LAYER ================= */}
         {heatmapEnabled && (
