@@ -71,6 +71,19 @@ export default function CameraInsightPanel({ data, onClose }: Props) {
 
     return () => clearInterval(interval);
   }, []);
+  const [imgSrc, setImgSrc] = useState("");
+
+  useEffect(() => {
+    const load = () => {
+      setImgSrc(`${data.snapshotUrl}?v=${Date.now()}`);
+    };
+
+    load();
+    const interval = setInterval(load, 15000);
+
+    return () => clearInterval(interval);
+  }, [data.snapshotUrl]);
+
   return (
     <div
       style={{
@@ -120,7 +133,7 @@ export default function CameraInsightPanel({ data, onClose }: Props) {
           marginTop: 10,
         }}
       /> */}
-      <img
+      {/* <img
         src={`${data.snapshotUrl}?v=${refresh}`}
         alt="camera"
         style={{
@@ -128,6 +141,11 @@ export default function CameraInsightPanel({ data, onClose }: Props) {
           borderRadius: 10,
           marginTop: 10,
         }}
+      /> */}
+      <img
+        src={imgSrc}
+        alt="camera"
+        style={{ width: "100%", borderRadius: 10, marginTop: 10 }}
       />
       {/* MODE */}
       <div style={{ display: "flex", gap: 8, marginTop: 10 }}>
