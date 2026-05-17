@@ -22,10 +22,11 @@ export async function getLatestPredictionByCamera(cameraId: string) {
   }>(`/predictions/${cameraId}/latest`);
 }
 export async function getPredictionsByCamera(cameraId: string) {
-  return fetchAPI<{
+  const data = await fetchAPI<{
     camera_id: string;
     last_input_slot: string;
     counts: number[];
     speeds: number[];
-  }[]>(`/predictions/${cameraId}`);
+  }[]>(`/predictions/${cameraId}/latest`);
+  return mapTrafficForecast(data);
 }

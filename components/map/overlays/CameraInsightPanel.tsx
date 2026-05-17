@@ -41,7 +41,7 @@ export default function CameraInsightPanel({ data, onClose }: Props) {
       setLoading(true);
 
       const res = await getFullTrafficByCameraId(data.id);
-
+      console.log("Traffic data:", res);
       if (isMounted) {
         setTraffic({
           ...res,
@@ -62,7 +62,15 @@ export default function CameraInsightPanel({ data, onClose }: Props) {
   const forecastPoint = traffic.forecast.find(
     (f) => f.timeOffset === selectedTime
   );
+  const [refresh, setRefresh] = useState(0);
 
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setRefresh(prev => prev + 1);
+    }, 15000);
+
+    return () => clearInterval(interval);
+  }, []);
   return (
     <div
       style={{
@@ -70,7 +78,7 @@ export default function CameraInsightPanel({ data, onClose }: Props) {
         top: 20,
         right: 20,
         width: 320,
-        height: "90vh",
+        height: "95vh",
         background: "#111",
         color: "white",
         borderRadius: 16,
@@ -103,7 +111,7 @@ export default function CameraInsightPanel({ data, onClose }: Props) {
       </div>
 
       {/* SNAPSHOT */}
-      <img
+      {/* <img
         src={data.snapshotUrl}
         alt="camera"
         style={{
@@ -111,8 +119,16 @@ export default function CameraInsightPanel({ data, onClose }: Props) {
           borderRadius: 10,
           marginTop: 10,
         }}
+      /> */}
+      <img
+        src={`${data.snapshotUrl}?v=${refresh}`}
+        alt="camera"
+        style={{
+          width: "100%",
+          borderRadius: 10,
+          marginTop: 10,
+        }}
       />
-
       {/* MODE */}
       <div style={{ display: "flex", gap: 8, marginTop: 10 }}>
         <button
@@ -169,7 +185,7 @@ export default function CameraInsightPanel({ data, onClose }: Props) {
 
           <div>⚡ Speed: {traffic.avgSpeed} km/h</div>
           <div>🚗 Vehicles: {traffic.vehicleCount}</div>
-          <div>🌦 Weather: {traffic.weather}</div>
+
 
           {/* CHART */}
           <div style={{ marginTop: 12 }}>
@@ -201,7 +217,7 @@ export default function CameraInsightPanel({ data, onClose }: Props) {
           </div>
 
           {/* PROGRESS */}
-          <div style={{ marginTop: 12 }}>
+          {/* <div style={{ marginTop: 12 }}>
             <div style={{ fontSize: 12 }}>Congestion</div>
             <div
               style={{
@@ -219,7 +235,7 @@ export default function CameraInsightPanel({ data, onClose }: Props) {
                 }}
               />
             </div>
-          </div>
+          </div> */}
         </>
       )}
 

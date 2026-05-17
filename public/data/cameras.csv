@@ -36,7 +36,7 @@ camera_id,snapshot_url,cam_type,district,location_lon,location_lat,status,ptz,vi
 5deb576d1dc17d7c5515acf9,http://151.242.85.54:8888/buckets/traffic-data/latest/5deb576d1dc17d7c5515acf9.jpg,tth,Quận Bình Thạnh,106.68202,10.777768,UP,True,
 662b7f251afb9c00172dc8bc,http://151.242.85.54:8888/buckets/traffic-data/latest/662b7f251afb9c00172dc8bc.jpg,tth,,106.697995662689,10.7767873576075,UP,True,
 5a823d555058170011f6eaa2,http://151.242.85.54:8888/buckets/traffic-data/latest/5a823d555058170011f6eaa2.jpg,tth,,106.702115535736,10.7791113331904,UP,False,
-5b632950fd4edb0019c7dc07,http://151.242.85.54:8888/buckets/traffic-data/latest/5b632950fd4edb0019c7dc07.jpg,tth,,106.684874296188,10.7568773715932,NOT_IMAGE,False,
+5b632950fd4edb0019c7dc07,http://151.242.85.54:8888/buckets/traffic-data/latest/5b632950fd4edb0019c7dc07.jpg,tth,,106.684874296188,10.7568773715932,UP,False,
 5deb576d1dc17d7c5515ad06,http://151.242.85.54:8888/buckets/traffic-data/latest/5deb576d1dc17d7c5515ad06.jpg,tth,,106.699558,10.788566,UP,True,
 662b857b1afb9c00172dd106,http://151.242.85.54:8888/buckets/traffic-data/latest/662b857b1afb9c00172dd106.jpg,tth,Quận Bình Tân,106.699739098549,10.7920852162229,UP,True,
 63ae75f9bfd3d90017e8f097,http://151.242.85.54:8888/buckets/traffic-data/latest/63ae75f9bfd3d90017e8f097.jpg,tth,,106.683275699615,10.769072262419,UP,False,
@@ -81,7 +81,7 @@ camera_id,snapshot_url,cam_type,district,location_lon,location_lat,status,ptz,vi
 5deb576d1dc17d7c5515ad05,http://151.242.85.54:8888/buckets/traffic-data/latest/5deb576d1dc17d7c5515ad05.jpg,tth,,106.697491,10.790705,UP,True,
 662b84771afb9c00172dd076,http://151.242.85.54:8888/buckets/traffic-data/latest/662b84771afb9c00172dd076.jpg,tth,,106.700012683868,10.7790322866967,UP,True,
 56de42f611f398ec0c481287,http://151.242.85.54:8888/buckets/traffic-data/latest/56de42f611f398ec0c481287.jpg,tth,Quận 1,106.700146794319,10.7654781410386,UP,False,http://camera.thongtingiaothong.vn/s/56de42f611f398ec0c481287/index.m3u8
-5deb576d1dc17d7c5515ad10,http://151.242.85.54:8888/buckets/traffic-data/latest/5deb576d1dc17d7c5515ad10.jpg,tth,Quận Phú Nhuận,106.689579,10.773652,NOT_IMAGE,True,
+5deb576d1dc17d7c5515ad10,http://151.242.85.54:8888/buckets/traffic-data/latest/5deb576d1dc17d7c5515ad10.jpg,tth,Quận Phú Nhuận,106.689579,10.773652,UP,True,
 5deb576d1dc17d7c5515ad0e,http://151.242.85.54:8888/buckets/traffic-data/latest/5deb576d1dc17d7c5515ad0e.jpg,tth,,106.686639,10.774969,UP,True,
 5deb576d1dc17d7c5515ad11,http://151.242.85.54:8888/buckets/traffic-data/latest/5deb576d1dc17d7c5515ad11.jpg,tth,Quận Tân Bình,106.689658,10.777922,UP,True,
 5deb576d1dc17d7c5515acf8,http://151.242.85.54:8888/buckets/traffic-data/latest/5deb576d1dc17d7c5515acf8.jpg,tth,Huyện Nhà Bè,106.67782,10.773823,UP,True,

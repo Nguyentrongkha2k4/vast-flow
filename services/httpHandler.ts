@@ -1,4 +1,4 @@
-const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL;
+const BASE_URL = "https://api-jxvm46idy.brevlab.com";
 
 export async function fetchAPI<T>(url: string): Promise<T> {
   console.log("Fetching API:", BASE_URL);
